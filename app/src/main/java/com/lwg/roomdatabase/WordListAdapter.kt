@@ -8,23 +8,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class WordListAdapter : ListAdapter<Word, WordListAdapter.WordViewHolder>(WordsComparator()) {
+class WordListAdapter(mLister: OnClickItemAdapter) :
+    ListAdapter<Word, WordListAdapter.WordViewHolder>(WordsComparator()) {
+
+    private var lister: OnClickItemAdapter = mLister
+
+    interface OnClickItemAdapter {
+        fun onClickItem(v: View?)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         return WordViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        val current = getItem(position)
-        holder.bind(current.word)
+        holder.bind(getItem(position), lister)
     }
 
-    class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val wordItemView: TextView = itemView.findViewById(R.id.textView)
-
-        fun bind(text: String?) {
-            wordItemView.text = text
-        }
+        var iLister: OnClickItemAdapter? = null
+        var word : Word? = null
 
         companion object {
             fun create(parent: ViewGroup): WordViewHolder {
@@ -32,6 +36,21 @@ class WordListAdapter : ListAdapter<Word, WordListAdapter.WordViewHolder>(WordsC
                     .inflate(R.layout.recyclerview_item, parent, false)
                 return WordViewHolder(view)
             }
+        }
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        fun bind(itemWord: Word, lister: OnClickItemAdapter) {
+            word = itemWord
+            wordItemView.text = itemWord.word
+            iLister = lister
+        }
+
+        override fun onClick(v: View?) {
+            v?.tag = word
+            iLister?.onClickItem(v)
         }
     }
 

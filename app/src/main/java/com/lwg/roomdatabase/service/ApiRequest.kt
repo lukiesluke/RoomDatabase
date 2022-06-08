@@ -16,7 +16,7 @@ interface ApiRequest {
     fun getResultMovieCall(): Call<List<Movie>>
 
     companion object {
-        private const val BASE_URL = "https://howtodoandroidx.com/"
+        private const val BASE_URL = "https://howtodoandroid.com/"
 
         var apiRequest: ApiRequest? = null
 

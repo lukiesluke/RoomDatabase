@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.lwg.roomdatabase.room.Word
 
 class WordListAdapter(mLister: OnClickItemAdapter) :
     ListAdapter<Word, WordListAdapter.WordViewHolder>(WordsComparator()) {

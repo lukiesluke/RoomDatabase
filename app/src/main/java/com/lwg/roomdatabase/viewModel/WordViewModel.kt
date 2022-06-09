@@ -2,6 +2,7 @@ package com.lwg.roomdatabase
 
 import androidx.lifecycle.*
 import com.lwg.roomdatabase.repository.WordRepository
+import com.lwg.roomdatabase.room.Word
 import kotlinx.coroutines.launch
 
 /**

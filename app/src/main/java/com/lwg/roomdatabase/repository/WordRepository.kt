@@ -1,7 +1,7 @@
 package com.lwg.roomdatabase.repository
 
 import androidx.annotation.WorkerThread
-import com.lwg.roomdatabase.Word
+import com.lwg.roomdatabase.room.Word
 import com.lwg.roomdatabase.room.WordDao
 import kotlinx.coroutines.flow.Flow
 

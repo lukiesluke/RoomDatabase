@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lwg.roomdatabase.repository.ApiRepository
+import com.lwg.roomdatabase.room.Word
 import com.lwg.roomdatabase.service.ApiRequest
 import com.lwg.roomdatabase.viewModel.ApiViewModel
 import com.lwg.roomdatabase.viewModel.MyAndroidViewModelFactory

@@ -1,4 +1,4 @@
-package com.lwg.roomdatabase
+package com.lwg.roomdatabase.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -2,9 +2,12 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class Utils {
+
     companion object {
+        const val KEY_COOKIE: String = "set-cookie"
         private var sharedPreferences: SharedPreferences? = null
-        fun setPref(context: Context, key: String, setValue: String) {
+
+        fun setSharedPref(context: Context, key: String, setValue: String) {
             if (sharedPreferences == null) {
                 sharedPreferences =
                     context.getSharedPreferences("PREFERENCE_CACHE", Context.MODE_PRIVATE);
@@ -17,12 +20,16 @@ class Utils {
             }
         }
 
-        fun getPref(context: Context, key: String, defaultValue: String): String? {
+        fun getSharedPref(context: Context, key: String, defaultValue: String): String? {
             if (sharedPreferences == null) {
                 sharedPreferences =
                     context.getSharedPreferences("PREFERENCE_CACHE", Context.MODE_PRIVATE);
             }
             return sharedPreferences?.getString(key, defaultValue);
+        }
+
+        fun getSharedPrefCookie(context: Context): String? {
+            return getSharedPref(context, KEY_COOKIE, "No cookie is cache")
         }
     }
 }

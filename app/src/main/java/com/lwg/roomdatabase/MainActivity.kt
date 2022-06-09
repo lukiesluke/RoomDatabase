@@ -1,5 +1,6 @@
 package com.lwg.roomdatabase
 
+import Utils
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity(), WordListAdapter.OnClickItemAdapter {
             // Update the cached copy of the words in the adapter.
             words.let { adapter.submitList(it) }
         }
+        println("onCreate Get from SharedPref " + Utils.getSharedPrefCookie(applicationContext))
 
         apiViewModel.sayHello()
         apiViewModel.movieList.observe(this) {

@@ -1,6 +1,7 @@
 package com.lwg.roomdatabase.viewModel
 
 import Utils
+import Utils.Companion.KEY_COOKIE
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -17,7 +18,8 @@ import retrofit2.Response
 
 class ApiViewModel(application: Application, private val repository: ApiRepository) :
     AndroidViewModel(application) {
-    val context: Context by lazy { application.applicationContext }
+    private val context: Context by lazy { application.applicationContext }
+
     val movieList = MutableLiveData<List<Movie>>()
 
     fun sayHello() {
@@ -44,13 +46,24 @@ class ApiViewModel(application: Application, private val repository: ApiReposito
         val call = repository.sayHello(spssCra)
         call.enqueue(object : Callback<SpssCra> {
             override fun onResponse(call: Call<SpssCra>, response: Response<SpssCra>) {
-                response.headers().values("Set-Cookie").toString().split(";").map {
-                    if (it.contains("JSESSIONID")) {
-                        val c = it.split("=")[1]
-                        Utils.setPref(context, "Cookie-set", "c")
-                        Log.d("lwg", "cookie: $c")
+//                response.headers().values("Set-Cookie").toString().split(";").map {
+//                    if (it.contains("JSESSIONID")) {
+//                        val c = it.split("=")[1]
+//                        Utils.setPref(context, "Cookie-set", "c")
+//                        Log.d("lwg", "cookie: $c")
+//                    }
+//                }
+
+                val list = response.headers().values("Set-Cookie")
+                list.forEach {
+                    it.split(";").forEach { it ->
+                        if (it.contains("JSESSIONID")) {
+                            Utils.setSharedPref(context, KEY_COOKIE, it)
+                            println(it)
+                        }
                     }
                 }
+                println("Get from SharedPref " + Utils.getSharedPrefCookie(context))
             }
 
             override fun onFailure(call: Call<SpssCra>, t: Throwable) {

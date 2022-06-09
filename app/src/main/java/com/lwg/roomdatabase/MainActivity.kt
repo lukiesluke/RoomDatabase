@@ -7,14 +7,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lwg.roomdatabase.repository.ApiRepository
 import com.lwg.roomdatabase.service.ApiRequest
-import com.lwg.roomdatabase.viewModel.ApiModelFactory
 import com.lwg.roomdatabase.viewModel.ApiViewModel
+import com.lwg.roomdatabase.viewModel.MyAndroidViewModelFactory
 
 
 class MainActivity : AppCompatActivity(), WordListAdapter.OnClickItemAdapter {
@@ -23,17 +22,15 @@ class MainActivity : AppCompatActivity(), WordListAdapter.OnClickItemAdapter {
     private val wordViewModel: WordViewModel by viewModels {
         WordViewModelFactory((application as WordsApplication).repository)
     }
-
-    private lateinit var apiViewModel: ApiViewModel
+    private val apiViewModel: ApiViewModel by viewModels {
+        // val apiService = ApiRequest.getInstance()
+        // al apiRepository = ApiRepository(apiService)
+        MyAndroidViewModelFactory(application, ApiRepository(ApiRequest.getInstance()))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val apiService = ApiRequest.getInstance()
-        val apiRepository = ApiRepository(apiService)
-        apiViewModel =
-            ViewModelProvider(this, ApiModelFactory(apiRepository))[ApiViewModel::class.java]
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val adapter = WordListAdapter(this)
@@ -48,12 +45,13 @@ class MainActivity : AppCompatActivity(), WordListAdapter.OnClickItemAdapter {
             words.let { adapter.submitList(it) }
         }
 
-        apiViewModel.getResultTracksCall()
+        apiViewModel.sayHello()
         apiViewModel.movieList.observe(this) {
             it.forEach { it ->
                 println("The element is ${it.name}")
             }
         }
+
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             val intent = Intent(this@MainActivity, NewWordActivity::class.java)
